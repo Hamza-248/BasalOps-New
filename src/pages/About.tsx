@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number; key?: React.Key }) => (
   <motion.div
@@ -16,6 +17,10 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 export default function About() {
   return (
     <div className="flex flex-col w-full">
+      <Helmet>
+        <title>About Us | BasalOps</title>
+        <meta name="description" content="We are a thoughtful, practical partner for small businesses. Learn about our mission and philosophy." />
+      </Helmet>
       {/* Header */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -3,6 +3,7 @@ import { Menu, X, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import FloatingContact from './FloatingContact';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -10,12 +11,31 @@ export function cn(...inputs: ClassValue[]) {
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up');
   const location = useLocation();
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const updateScrollDirection = () => {
+      const scrollY = window.scrollY;
+      const direction = scrollY > lastScrollY ? 'down' : 'up';
+      if (direction !== scrollDirection && (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)) {
+        setScrollDirection(direction);
+      }
+      lastScrollY = scrollY > 0 ? scrollY : 0;
+      setIsScrolled(scrollY > 100);
+    };
+
+    window.addEventListener('scroll', updateScrollDirection);
+    return () => window.removeEventListener('scroll', updateScrollDirection);
+  }, [scrollDirection]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -29,7 +49,13 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFA] text-neutral-900 font-sans selection:bg-neutral-200">
       {/* Navigation */}
-      <header className="sticky top-0 z-50 bg-[#FAFAFA]/80 backdrop-blur-md border-b border-neutral-200/50">
+      <header 
+        className={cn(
+          "fixed top-0 w-full z-50 transition-all duration-300 ease-in-out border-b border-neutral-200/50",
+          isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm" : "bg-transparent border-transparent",
+          scrollDirection === 'down' && isScrolled ? "-translate-y-full" : "translate-y-0"
+        )}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
@@ -40,13 +66,13 @@ export default function Layout() {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden md:flex items-center md:gap-4 lg:gap-8">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-neutral-900",
+                    "font-medium transition-colors hover:text-neutral-900 md:text-xs lg:text-sm whitespace-nowrap",
                     location.pathname === link.path ? "text-neutral-900" : "text-neutral-500"
                   )}
                 >
@@ -55,7 +81,7 @@ export default function Layout() {
               ))}
               <Link
                 to="/book-a-meeting"
-                className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-neutral-900 rounded-full hover:bg-neutral-800 transition-all active:scale-95"
+                className="inline-flex items-center justify-center text-white bg-neutral-900 rounded-full hover:bg-neutral-800 transition-all active:scale-95 md:px-4 md:py-2 md:text-xs lg:px-5 lg:py-2.5 lg:text-sm whitespace-nowrap font-medium"
               >
                 Book a Meeting
               </Link>
@@ -147,6 +173,7 @@ export default function Layout() {
           </div>
         </div>
       </footer>
+      <FloatingContact />
     </div>
   );
 }

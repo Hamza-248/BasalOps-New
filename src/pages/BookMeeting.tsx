@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
+import { Helmet } from 'react-helmet-async';
 
 const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number; key?: React.Key }) => (
   <motion.div
@@ -23,6 +24,10 @@ export default function BookMeeting() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#FAFAFA]">
+      <Helmet>
+        <title>Book a Strategy Call | BasalOps</title>
+        <meta name="description" content="Schedule a free consultation to discuss your current digital presence, business needs, and opportunities for improvement." />
+      </Helmet>
       <section className="pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">

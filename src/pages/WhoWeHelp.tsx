@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Store, Stethoscope, GraduationCap, Utensils, Briefcase, Rocket } from 'lucide-react';
 
 const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number; key?: React.Key }) => (
@@ -50,6 +51,10 @@ export default function WhoWeHelp() {
 
   return (
     <div className="flex flex-col w-full">
+      <Helmet>
+        <title>Who We Help | BasalOps</title>
+        <meta name="description" content="We help local service businesses, retail, clinics, educational businesses, and hospitality brands grow their digital presence." />
+      </Helmet>
       {/* Header */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-[#FAFAFA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

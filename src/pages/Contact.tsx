@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
+import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number; key?: React.Key }) => (
@@ -23,6 +24,10 @@ export default function Contact() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#FAFAFA]">
+      <Helmet>
+        <title>Contact Us | BasalOps</title>
+        <meta name="description" content="Get in touch with BasalOps. Send us a message and we'll get back to you within 24 hours." />
+      </Helmet>
       <section className="pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
